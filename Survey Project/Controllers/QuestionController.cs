@@ -1,4 +1,5 @@
 ﻿using Survey_Project.Models;
+using Survey_Project.Utils;
 using System;
 //Berkay Karadayı
 //201511034
@@ -10,7 +11,7 @@ using System.Web.Mvc;
 
 namespace Survey_Project.Controllers
 {
-    public class QuestionController : Controller
+    public class QuestionController : BaseController
     {
         SurveyEntities db = new SurveyEntities();
         public ActionResult Index()
@@ -27,7 +28,7 @@ namespace Survey_Project.Controllers
             if (questions.Question != null)
             {
                 questions.CreatedDate = DateTime.Now;
-                questions.CreatedBy = "System";
+                questions.CreatedBy = NameSurname;
 
                 db.Questions.Add(questions);
                 db.SaveChanges();
@@ -58,7 +59,7 @@ namespace Survey_Project.Controllers
             //CreatedBy değiştirmeyelim diye
             db.Entry(questions).Property(e => e.CreatedDate).IsModified = false;
             //CreateDate değiştirmeyelim diye
-            questions.ModifyBy = "System Edit";
+            questions.ModifyBy = NameSurname;
             questions.ModifyDate = DateTime.Now;
             db.SaveChanges();
             return RedirectToAction("Index");// Create'de nereye gönderiyorsa,

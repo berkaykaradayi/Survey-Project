@@ -2,7 +2,9 @@
 //201511034
 
 
+using Sitecore.FakeDb;
 using Survey_Project.Models;
+using Survey_Project.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,9 +13,10 @@ using System.Web.Mvc;
 
 namespace Survey_Project.Controllers
 {
-    public class PersonController : Controller
+    public class PersonController : BaseController
     {
-        SurveyEntities db = new SurveyEntities();
+       // SurveyEntities db = new SurveyEntities();
+
         public ActionResult Index()
         {
             var model = db.User.ToList();
@@ -28,7 +31,7 @@ namespace Survey_Project.Controllers
             if(user.NameSurname !=null)
             { 
             user.CreateDate=DateTime.Now;
-            user.CreatedBy = "System";
+            user.CreatedBy = NameSurname;
            
             db.User.Add(user);
             db.SaveChanges();
@@ -59,7 +62,7 @@ namespace Survey_Project.Controllers
                                     //CreatedBy değiştirmeyelim diye
             db.Entry(user).Property(e => e.CreateDate).IsModified = false;
                                     //CreateDate değiştirmeyelim diye
-            user.ModifyBy = "System Edit";
+            user.ModifyBy = NameSurname;
             user.ModifyDate = DateTime.Now;
             db.SaveChanges();
             return RedirectToAction("Index");// Create'de nereye gönderiyorsa,
