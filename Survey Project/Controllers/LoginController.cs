@@ -39,5 +39,11 @@ namespace Survey_Project.Controllers
             
            
         }
+
+        public ActionResult LogOut()
+        {
+            Session.Abandon(); //Ends Sessions
+            return RedirectToAction("SignIn", "Login");
+        }
     }
 }

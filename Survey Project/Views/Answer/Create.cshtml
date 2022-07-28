@@ -26,11 +26,11 @@
                 <br /> <br />
 
                 <div class="icheck-material-primary icheck-inline">
-                    <input type="radio" id="Id_@item.Id" name="Answer_@item.Id" class="radio_@item.Id" value="Yes">
-                    <label for="Id_@item.Id">Yes</label>
+                    <input type="radio" id="Id_@item.Id" name="Answer_@item.Id" class="radio_@item.Id" value="@Survey_Project.Constants.AnswerType.Yes"> @*value was "Yes"*@
+                <label for="Id_@item.Id">@Survey_Project.Constants.AnswerType.Yes</label>
 
-                    <input type="radio" id="Id_@mines" name="Answer_@item.Id" class="radio_@item.Id" value="No">
-                    <label for="Id_@mines">No</label>
+                    <input type="radio" id="Id_@mines" name="Answer_@item.Id" class="radio_@item.Id" value="@Survey_Project.Constants.AnswerType.No">  @*value was "No"*@
+                <label for="Id_@mines">@Survey_Project.Constants.AnswerType.No</label>
 
                 </div>
                

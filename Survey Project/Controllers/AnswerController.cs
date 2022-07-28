@@ -12,31 +12,80 @@ namespace Survey_Project.Controllers
     {
         public ActionResult Index()
         {
-            return View();
-        }
-        public ActionResult Create()
-        {
-            List<SelectListItem> userLİst = (from user in db.User // Do for Question too
-                                             where user.Code != Code
-                                             select new SelectListItem
-                                             {
-                                                 Text = user.NameSurname,
-                                                 Value = user.Code.ToString()
-                                             }).ToList();
+            var model = db.Answers.Where(m=>m.UserCode== UserCode).ToList();
 
-            ViewBag.User = new SelectList(userLİst.OrderBy(m => m.Text), "Value", "Text");
+            return View(model);
+        }
+        public ActionResult Create(string Code)
+           
+        {
+            if (Code == null)
+            {
+                List<SelectListItem> userLİst =
+                (from user in db.User // Do for Question too
+                 where user.Code != UserCode
+                 select new SelectListItem
+                 {
+                     Text = user.NameSurname,
+                     Value = user.Code.ToString()
+                 }).ToList();
+
+                ViewBag.User = new SelectList
+                    (userLİst.OrderBy(m => m.Text), "Value", "Text");
+
+
+                var questionModel = db.Questions.ToList();
+
+                return View(questionModel);
+
+             //it will let user fill the survey
             
+            }
+            else 
+            {  //will post in else
+                CalculateScore(Code);
+                return RedirectToAction("Index");
+            }
             
-            var questionModel = db.Questions.ToList();
+        }
+        public void CalculateScore(string code)
+        {
+            double yes = 0, no = 0, result=0;
             
-            return View(questionModel);
+            var answer = db.Answers.FirstOrDefault
+                (m => m.PersonCode == code && m.UserCode==UserCode); //"Code-> UserCode" here, logged user
+
+            var answerLine = db.AnswerLine.Where(m => m.AnswerId == answer.Id).ToList();
+
+            foreach (var item in answerLine)
+            {
+                if (item.Answers == Constants.AnswerType.Yes)
+                {
+                    yes++;
+                }
+                else
+                {
+                    no++;
+                }              
+            }
+            result = (yes / (yes + no))*100;
+            if (result >=80)
+            {
+                answer.IsComplete = true;
+            }
+            else
+            {
+                answer.IsComplete = false;
+            }
+            answer.Score=result.ToString();
+            db.SaveChanges();
         }
 
         public String SendData(AnswerModel answerModel)
         {
             int? month = DateTime.Now.Month;
 
-            var model = db.Answers.FirstOrDefault(m=>m.PersonCode == answerModel.Code && m.UserCode ==Code &&
+            var model = db.Answers.FirstOrDefault(m=>m.PersonCode == answerModel.Code && m.UserCode == UserCode &&
                 m.CreateDate.Value.Month== month);
             if (model != null)
             {
@@ -49,7 +98,7 @@ namespace Survey_Project.Controllers
                 Answers answer = new Answers(); //same names with data base
                 answer.PersonCode = answerModel.Code;
                 answer.PersonName = answerModel.NameSurname;
-                answer.UserCode = Code;
+                answer.UserCode = UserCode;
                 answer.CreateDate = DateTime.Now;
                 answer.CreatedBy = NameSurname; //Logged User
 
