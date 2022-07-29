@@ -22,5 +22,7 @@ namespace Survey_Project.Models
         public string CreatedBy { get; set; }
         public Nullable<System.DateTime> ModifyDate { get; set; }
         public string ModifyBy { get; set; }
+
+        public Nullable<bool> IsAdmin { get; set; } //en son bunu ekledim, otomatik eklemediði için
     }
 }
