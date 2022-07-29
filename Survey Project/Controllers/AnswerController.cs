@@ -53,7 +53,7 @@ namespace Survey_Project.Controllers
             double yes = 0, no = 0, result=0;
             
             var answer = db.Answers.FirstOrDefault
-                (m => m.PersonCode == code && m.UserCode==UserCode); //"Code-> UserCode" here, logged user
+                (m => m.PersonCode == code && m.UserCode==UserCode ); //"Code-> UserCode" here, logged user
 
             var answerLine = db.AnswerLine.Where(m => m.AnswerId == answer.Id).ToList();
 
@@ -88,7 +88,7 @@ namespace Survey_Project.Controllers
             var model = db.Answers.FirstOrDefault(m=>m.PersonCode == answerModel.Code && m.UserCode == UserCode &&
                 m.CreateDate.Value.Month== month);
             if (model != null)
-            {
+            {    
                 SaveAnswerLine(answerModel.Question, answerModel.Answer, model.Id);
 
                 // if no data in db
@@ -126,7 +126,7 @@ namespace Survey_Project.Controllers
                 answerLine.AnswerId = answerId;
                 answerLine.Answers = answer;
                 answerLine.Question = question;
-
+                //answerLine.Id = answerId;///////////
                 db.AnswerLine.Add(answerLine);
                 db.SaveChanges();
             }

@@ -12,6 +12,7 @@ namespace Survey_Project.Utils
         public SurveyEntities db = new SurveyEntities();
         public string UserCode { get; set; } //Code
         public string NameSurname { get; set; }
+        public int Id { get; set; } // latest
         protected override void OnActionExecuting(ActionExecutingContext filterContext)
         {
             if (Session["Code"]==null)

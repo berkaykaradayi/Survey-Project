@@ -23,7 +23,7 @@ namespace Survey_Project.Controllers
             return View(model);
         }
 
-        public ActionResult Create(User user)
+        public ActionResult Create(User user, string Answer)
         {
             //User user1 = new User();
             //user1.
@@ -32,6 +32,14 @@ namespace Survey_Project.Controllers
             { 
             user.CreateDate=DateTime.Now;
             user.CreatedBy = NameSurname;
+                //if (Answer == Constants.AnswerType.Yes)
+                //{
+                //    user.IsAdmin = true; // Tanımına kendim ekledim IsAdmin, yoksa görmüyordu.
+                //}
+                //else
+                //{
+                //    user.IsAdmin = false;
+                //}
            
             db.User.Add(user);
             db.SaveChanges();

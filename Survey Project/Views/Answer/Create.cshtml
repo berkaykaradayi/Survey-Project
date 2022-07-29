@@ -54,6 +54,12 @@
                                var answer = $('input[name ="Answer_@item.Id"]:checked').val();
                                formdata.set("Answer", answer);
 
+                                if (code == '')
+                                 {
+                                      $('#WarningMessage').modal('show')
+                                    return;
+                                 }
+
                                $.ajax({
                                    url: "/Answer/SendData",
                                    data: formdata,
@@ -87,5 +93,27 @@
                 <button type="submit" class="btn btn-primary shadow active-info px-5"><i class="icon-lock"></i> Save</button>
             </div>
         }
+    </div>
+</div>
+
+<div class="modal fade" id="WarningMessage">
+    <div class="modal-dialog">
+        <div class="modal-content border-warning">
+            <div class="modal-header bg-warning">
+                <h5 class="modal-title text-white"><i class="fa fa-warning"></i> Warning! </h5>
+                <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <h4>
+                    <p>Please Select Person </p>           
+                </h4>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal"><i class="fa fa-times"></i> Close</button>
+            </div>
+        </div>
     </div>
 </div>
