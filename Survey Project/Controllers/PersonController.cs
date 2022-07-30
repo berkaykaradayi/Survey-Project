@@ -15,12 +15,20 @@ namespace Survey_Project.Controllers
 {
     public class PersonController : BaseController
     {
-       // SurveyEntities db = new SurveyEntities();
+        // SurveyEntities db = new SurveyEntities();
 
         public ActionResult Index()
         {
-            var model = db.User.ToList();
-            return View(model);
+            if (Session["Admin"] == null)
+            {
+                return RedirectToAction("SignIn", "Login");
+            }
+            else
+            {
+                var model = db.User.ToList();
+                return View(model);
+            }
+
         }
 
         public ActionResult Create(User user, string Answer1)
@@ -28,10 +36,10 @@ namespace Survey_Project.Controllers
             //User user1 = new User();
             //user1.
 
-            if(user.NameSurname !=null)
-            { 
-            user.CreateDate=DateTime.Now;
-            user.CreatedBy = NameSurname;
+            if (user.NameSurname != null)
+            {
+                user.CreateDate = DateTime.Now;
+                user.CreatedBy = NameSurname;
                 if (Answer1 == Constants.AnswerType.Yes)
                 {
                     user.IsAdmin = true; // Modele eklendi gözüküyor ama 
@@ -41,43 +49,51 @@ namespace Survey_Project.Controllers
                     user.IsAdmin = false;
                 }
                 db.User.Add(user);
-            db.SaveChanges();
-              return RedirectToAction("Index");
+                db.SaveChanges();
+                return RedirectToAction("Index");
             }
             else
             {
-               return View();
+                return View();
             }
-           
+
         }
 
         public ActionResult Edit(int? Id)
         {
-            if(Id == null || Id == 0)
+            if (Id == null || Id == 0)
             {
                 return HttpNotFound();
             }
-            var model = db.User.Find(Id);              
-             return View(model);
-         }
-
-        [HttpPost]
-        public ActionResult Edit(User user)
-        {   
-                db.Entry(user).State=System.Data.Entity.EntityState.Modified;
-                db.Entry(user).Property(e=>e.CreatedBy).IsModified=false;
-                                    //CreatedBy değiştirmeyelim diye
-            db.Entry(user).Property(e => e.CreateDate).IsModified = false;
-                                    //CreateDate değiştirmeyelim diye
-            user.ModifyBy = NameSurname;
-            user.ModifyDate = DateTime.Now;
-            db.SaveChanges();
-            return RedirectToAction("Index");// Create'de nereye gönderiyorsa,
-                          // yine Index sayfasına göndersin 
+            var model = db.User.Find(Id);
+            return View(model);
         }
 
-        
-         public ActionResult Delete(int? Id)
+        [HttpPost]
+        public ActionResult Edit(User user, string Answer1)
+        {
+            db.Entry(user).State = System.Data.Entity.EntityState.Modified;
+            db.Entry(user).Property(e => e.CreatedBy).IsModified = false;
+            //CreatedBy değiştirmeyelim diye
+            db.Entry(user).Property(e => e.CreateDate).IsModified = false;
+            //CreateDate değiştirmeyelim diye
+            user.ModifyBy = NameSurname;
+            user.ModifyDate = DateTime.Now;
+            if (Answer1 == Constants.AnswerType.Yes)
+            {
+                user.IsAdmin = true; // Modele eklendi gözüküyor ama 
+            }
+            else
+            {
+                user.IsAdmin = false;
+            }
+            db.SaveChanges();
+            return RedirectToAction("Index");// Create'de nereye gönderiyorsa,
+                                             // yine Index sayfasına göndersin 
+        }
+
+
+        public ActionResult Delete(int? Id)
         {
             if (Id == null || Id == 0)
             {
@@ -89,8 +105,8 @@ namespace Survey_Project.Controllers
             db.SaveChanges();
             return RedirectToAction("Index");
         }
-   
+
     }
-    
+
 
 }

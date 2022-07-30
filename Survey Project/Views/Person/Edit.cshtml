@@ -22,6 +22,32 @@
              <input type="password" class="form-control" name="Password" id="input-3" value="@Model.Password" placeholder="Enter Password" maxlength="25" required>
          </div>
 
+         <label for="input-3">Is Admin?</label>
+
+         <div class="icheck-material-primary icheck-inline">
+             @if (Model.IsAdmin == true)
+             {
+                 <input type="radio" id="1" name="Answer1" value="@Survey_Project.Constants.AnswerType.Yes" checked> @*value was "Yes"*@
+                 @*To make dynamic, I change it*@
+                 <label for="1">@Survey_Project.Constants.AnswerType.Yes</label>
+
+                 <input type="radio" id="2" name="Answer1" value="@Survey_Project.Constants.AnswerType.No"> @*value was "Yes"*@
+                 <label for="2">@Survey_Project.Constants.AnswerType.No</label>
+
+             }
+             else
+             {
+                 <input type="radio" id="1" name="Answer1" value="@Survey_Project.Constants.AnswerType.Yes"> @*value was "Yes"*@
+                 @*To make dynamic, I change it*@
+                 <label for="1">@Survey_Project.Constants.AnswerType.Yes</label>
+
+                 <input type="radio" id="2" name="Answer1" value="@Survey_Project.Constants.AnswerType.No" checked> @*value was "Yes"*@
+                 <label for="2">@Survey_Project.Constants.AnswerType.No</label>
+             }
+
+
+         </div>
+
          <div class="form-group">
              <button type="submit" class="btn btn btn-success shadow-success px-5"><i class="icon-lock"></i> Save</button>
          </div>

@@ -27,6 +27,10 @@ namespace Survey_Project.Controllers
                 {
                 Session["Code"]= persons.Code;
                 Session["NameSurname"]= persons.NameSurname;
+                    if (persons.IsAdmin ==true)
+                    {
+                        Session["Admin"] = "Admin";
+                    }
                 return RedirectToAction("Create", "Answer"); 
              }
              else
