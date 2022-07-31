@@ -134,5 +134,12 @@ namespace Survey_Project.Controllers
              
 
         }
+    
+        public ActionResult Detail(int? Id)
+        {
+            var model = db.AnswerLine.Where(m => m.AnswerId == Id).ToList();
+            return View(model);
+        }
+
     }
 }

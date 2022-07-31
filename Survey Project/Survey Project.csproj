@@ -370,6 +370,7 @@
     <Content Include="Views\Question\Edit.cshtml" />
     <Content Include="Views\Answer\Create.cshtml" />
     <Content Include="Views\Answer\Index.cshtml" />
+    <Content Include="Views\Answer\Detail.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
