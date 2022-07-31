@@ -69,7 +69,7 @@ namespace Survey_Project.Controllers
                 }              
             }
             result = (yes / (yes + no))*100;
-            if (result >=80)
+            if (result >75)
             {
                 answer.IsComplete = true;
             }
