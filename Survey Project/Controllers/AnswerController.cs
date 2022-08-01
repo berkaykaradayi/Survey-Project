@@ -2,6 +2,7 @@
 using Survey_Project.Utils;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity.Validation;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -12,9 +13,20 @@ namespace Survey_Project.Controllers
     {
         public ActionResult Index()
         {
-            var model = db.Answers.Where(m=>m.UserCode== UserCode).ToList();
+            if (Session["Admin"] == null)
+            {
+                var model = db.Answers.Where(m=>m.UserCode == UserCode).ToList();
+                return View(model);
+            }
+            else
+            {
+                var model = db.Answers.ToList();
+                return View(model);
+            }
 
-            return View(model);
+            //var model = db.Answers.Where(m => m.UserCode == UserCode).ToList();
+            //return View(model);
+
         }
         public ActionResult Create(string Code)
            
@@ -50,8 +62,9 @@ namespace Survey_Project.Controllers
         }
         public void CalculateScore(string code)
         {
-            double yes = 0, no = 0, result=0;
-            
+            double yes = 0, no = 0;
+            double result = 0;
+            int res = 0;
             var answer = db.Answers.FirstOrDefault
                 (m => m.PersonCode == code && m.UserCode==UserCode ); //"Code-> UserCode" here, logged user
 
@@ -68,17 +81,42 @@ namespace Survey_Project.Controllers
                     no++;
                 }              
             }
-            result = (yes / (yes + no))*100;
-            if (result >75)
+            result = ((yes / (yes + no))*100);
+            res= (int)result;
+            if (res > 75)
             {
                 answer.IsComplete = true;
+                
+                // db.Answers.Add(Score);
+         
+
             }
             else
             {
                 answer.IsComplete = false;
+                //answer.Score = result.ToString();
+                // db.Answers.Add(Score);
+
             }
-            answer.Score=result.ToString();
-            db.SaveChanges();
+
+
+            answer.Score = res.ToString();
+            try
+            {
+                db.SaveChanges();
+            }
+            catch (DbEntityValidationException ex)
+            {
+                foreach (var entityValidationErrors in ex.EntityValidationErrors)
+                {
+                    foreach (var validationError in entityValidationErrors.ValidationErrors)
+                    {
+                        Response.Write("Property: " + validationError.PropertyName + " Error: " + validationError.ErrorMessage);
+                    }
+                }
+            }
+
+
         }
 
         public String SendData(AnswerModel answerModel)
