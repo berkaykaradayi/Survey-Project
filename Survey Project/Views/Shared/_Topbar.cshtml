@@ -1,20 +1,37 @@
-﻿<header class="topbar-nav">
+﻿
+<header class="topbar-nav">
     <nav class="navbar navbar-expand fixed-top gradient-royal @*ibiza*@ ">
         <ul class="navbar-nav mr-auto align-items-center">
             <li class="nav-item">
                 @*<a class="nav-link toggle-menu" href="javascript:void();">
-                    <i class="icon-menu menu-icon"></i> //MENU İÇİN
-                </a>*@
+                        <i class="icon-menu menu-icon"></i> //MENU İÇİN
+                    </a>*@
             </li>
             <li class="nav-item">
                 @*<form class="search-bar">
-                    <input type="text" class="form-control" placeholder="Enter keywords">
-                    <a href="javascript:void();"><i class="icon-magnifier"></i></a> // ARAMA KISMI EKLEMEK İÇİN
-                </form>*@ 
+                        <input type="text" class="form-control" placeholder="Enter keywords">
+                        <a href="javascript:void();"><i class="icon-magnifier"></i></a> // ARAMA KISMI EKLEMEK İÇİN
+                    </form>*@
             </li>
         </ul>
 
         <ul class="navbar-nav align-items-center right-nav-link">
+
+            @if (Session["Code"] != null)
+            {
+                <a class="nav-link dropdown-toggle dropdown-toggle-nocaret waves-effect">
+                    <p>
+                        <i class="icon-user"></i>
+
+                            <b>Welcome! &nbsp</b>
+                           
+                            <b>   @Session["Code"]  </b>                          
+                        
+                    </p>
+                </a>
+
+            }
+
             <li>
                 <a class="nav-link dropdown-toggle dropdown-toggle-nocaret waves-effect"
                    href="/Answer/Index">
@@ -50,9 +67,9 @@
                    href="/Login/LogOut">
                     <i class="icon-power"></i>@*<span class="badge badge-primary badge-up">10</span>*@
                 </a>
-                
+
             </li>
-            
+
         </ul>
     </nav>
 </header>
